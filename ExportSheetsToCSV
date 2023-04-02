@@ -1,0 +1,21 @@
+Sub ExportSheetsToCSV()
+    Dim xWs As Worksheet
+    Dim xcsvFile As String
+    Dim folder As FileDialog
+    
+    Set folder = Application.FileDialog(msoFileDialogFolderPicker)
+    If folder.Show <> -1 Then Exit Sub
+    xDir = folder.SelectedItems(1)
+    
+    Application.DisplayAlerts = False
+    Application.ScreenUpdating = False
+    For Each xWs In Application.ActiveWorkbook.Worksheets
+        xWs.Copy
+        xcsvFile = CurDir & "\" & xWs.Name & ".csv"
+        xWs.SaveAs xDir & "\" & xWs.Name, xlCSV
+        Application.ActiveWorkbook.Saved = True
+        Application.ActiveWorkbook.Close
+    Next
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+End Sub
